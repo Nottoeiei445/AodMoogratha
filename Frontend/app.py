@@ -7,7 +7,7 @@ def admin():
 
 @app.route('/')
 def home():
-    return redirect(url_for('admin'))
+    return redirect(url_for('booktable'))
 
 @app.route('/admin/booktable')
 def booktable():
@@ -47,4 +47,4 @@ def table5():
 
 
 if __name__ == "__main__":
-    app.run(debug=True) #,host = '0.0.0.0'
+    app.run(debug=True ,host = '0.0.0.0') #,host = '0.0.0.0'
