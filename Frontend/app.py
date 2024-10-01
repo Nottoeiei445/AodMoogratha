@@ -1,10 +1,6 @@
 from flask import Flask,render_template,redirect,url_for
 app = Flask(__name__)
 
-@app.route('/admin')
-def admin():
-    return render_template("admin.html")
-
 @app.route('/')
 def home():
     return redirect(url_for('booktable'))
