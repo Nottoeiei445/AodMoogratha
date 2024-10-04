@@ -1,0 +1,28 @@
+{% extends "navBar.html"%}
+
+{%block content%}
+<div class = "container my-2">
+    <h2>แบบฟอร์ม</h2>
+    <form action = "{{url_for('AddMenu')}}" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="">ID</label>
+            <input type="number" id = "id" name="id" class="form-control" required> 
+        </div>
+        <div>
+            <label for="">ชื่อเมนู</label>
+            <input type="text" id = "name" name="name" class="form-control" required> 
+        </div>
+        <div class="my-2">
+            <label for="">จำนวน</label>
+            <input type="number" id="number" name="num" min="1" required>
+        </div>
+        <div class="my-2">
+            <label for="">รูปภาพ</label>
+            <input type="file" id="image" name="img" required>
+        </div>
+        <input type="submit" value="ส่งข้อมูล" class="btn btn-success my-2">
+    </form>
+    <hr>
+</div>
+{%endblock%}
+
