@@ -4,13 +4,13 @@
     <h1>Hello Stock</h1>
     <a href="{{ url_for('addStock') }}">Add New Stock</a>
     <div>
-        {% for item in stock_items %}
+    {% for item in stock_items %} <!-- ลูปแสดงเมนู -->
     <div>
-        <h2>Name: {{ item['Name'] }}    จำนวน: {{ item['QTY'] }}</h2>
-        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" 
+        <h2>Name: {{ item['Name'] }}    จำนวน: {{ item['QTY'] }}</h2> <!-- แสดงชื่อเมนูและจำนวน -->
+        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}"  
             alt="{{ item['Name'] }}" 
-            style="width: 200px; height: 200px;">
+            style="width: 200px; height: 200px;"> <!-- แสดงรูปภาพ -->
     </div>
-{% endfor %}
+    {% endfor %} <!-- จบลูป -->
     </div>
 {%endblock%}

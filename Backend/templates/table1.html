@@ -1,5 +1,10 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-    <h1>Hello Table1</h1>
+    {% for item in stock_items %} <!-- ลูปแสดงเมนู -->
+    <div >
+        <h2>Name: {{ item['Name'] }}    จำนวน: {{ item['QTY'] }}</h2> <!-- แสดงชื่อเมนูและจำนวน -->
+        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" alt="{{ item['Name'] }}">  <!-- แสดงรูปภาพ -->
+    </div>
+    {% endfor %}
 {%endblock%}

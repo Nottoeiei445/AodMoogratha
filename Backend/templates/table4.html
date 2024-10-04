@@ -3,9 +3,9 @@
 {%block content%}
 
     {% for item in stock_items %}
-    <div class="border border-1">
+    <div >
         <h2>Name: {{ item['Name'] }}    จำนวน: {{ item['QTY'] }}</h2>
-        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" alt="{{ item['Name'] }}">     
+        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" alt="{{ item['Name'] }}">  <!-- แสดงรูปภาพ -->
     </div>
     {% endfor %}
 
