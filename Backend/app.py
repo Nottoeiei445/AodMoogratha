@@ -22,22 +22,22 @@ def booktable():
 
 @app.route('/admin/stock')
 def _stock():
-    stock_items = stock.inOrder()
-    return render_template('stock.html', stock_items=stock_items)
+    stock_items = stock.inOrder() 
+    return render_template('stock.html', stock_items=stock_items) #ส่งไปที่หน้า stock.html
 
-@app.route('/admin/stock/addstock')
-def addStock():
+@app.route('/admin/stock/addstock') 
+def addStock(): #METHOD แสดงหน้า addstock.html
     return render_template("addStock.html")
 
-@app.route('/admin/stock/addstock',methods=['GET','POST'])
-def AddMenu():
+@app.route('/admin/stock/addstock',methods=['GET','POST']) 
+def AddMenu(): #method รับค่า
     try:
-        id = int(request.form['id'])
-        name = request.form['name']
-        number = int(request.form['num'])
+        id = int(request.form['id']) #รับ id
+        name = request.form['name'] #รับ name
+        number = int(request.form['num']) #รับ num
 
-        img_file = request.files['img']
-        if img_file:
+        img_file = request.files['img'] #รับ img
+        if img_file: #เซฟไฟล์รูปภาพ
             filename = secure_filename(img_file.filename)
 
             # ตรวจสอบว่ามีโฟลเดอร์ static/images แล้วหรือไม่
@@ -48,8 +48,9 @@ def AddMenu():
             img_path = os.path.join(img_directory, filename)
             img_file.save(img_path)
 
-        # เพิ่มข้อมูลใหม่เข้า stock
-        inserted = stock.insert(id, name, number, filename)
+        
+        inserted = stock.insert(id, name, number, filename)# เพิ่มเมนูใหม่เข้า stock
+
         if inserted:
             flash("Stock item added successfully!", "success")
             return redirect(url_for('_stock'))
