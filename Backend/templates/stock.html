@@ -1,16 +1,40 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-    <h1>Hello Stock</h1>
-    <a href="{{ url_for('addStock') }}">Add New Stock</a>
     <div>
-    {% for item in stock_items %} <!-- ลูปแสดงเมนู -->
-    <div>
-        <h2>Name: {{ item['Name'] }}    จำนวน: {{ item['QTY'] }}</h2> <!-- แสดงชื่อเมนูและจำนวน -->
-        <img src="{{ url_for('static', filename='images/' + item['IMG']) }}"  
-            alt="{{ item['Name'] }}" 
-            style="width: 200px; height: 200px;"> <!-- แสดงรูปภาพ -->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Stock</h1>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <a href="{{ url_for('addStock') }}">Add New Stock</a>
+        </div>
+        <div class="container my-3">
+            <form action="{{url_for('searchStock')}}" method="GET" class="d-flex">
+                <input type="number" id="id" name="id" class="form-control me-2" placeholder="ค้นหาสินค้า..." aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+            </form>
+        </div>
     </div>
-    {% endfor %} <!-- จบลูป -->
+    
+
+    <div class="container my-5">
+        <div class="row">
+            {% for item in stock_items %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" 
+                         alt="{{ item['Name'] }}" 
+                         class="card-img-top" 
+                         style="height: 200px; object-fit: cover;"> <!-- ปรับขนาดรูปภาพให้เท่ากัน -->
+                    <div class="card-body">
+                        <h6 class="card-title">Menu ID: {{ item['ID'] }}</h6>
+                        <h5 class="card-title">{{ item['Name'] }}</h5> <!-- ชื่อสินค้า -->
+                        <p class="card-text">Quantity: {{ item['QTY'] }}</p> <!-- จำนวนสินค้า -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
 {%endblock%}

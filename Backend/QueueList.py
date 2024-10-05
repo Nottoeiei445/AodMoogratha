@@ -46,12 +46,6 @@ class QueueList:
 
         return result
 
-if __name__ == "__main__":
-    ql = QueueList()
-    ql.enqueue(1,"A",5)
-    ql.enqueue(1,"B",6)
-    ql.enqueue(1,"C",9)
-    for item in ql.display():
-        print(f'{item['queueNum']} : {item['table']} : {item['ID']} : {item['qty']} \n ')
+
 
     
