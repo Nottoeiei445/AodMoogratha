@@ -1,5 +1,26 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-    <h1>Hello Queue</h1>
+<div class="container my-5">
+    <h1>Queue</h1>
+
+    {% if enqueue %}
+    <div class="row">
+        <!-- Loop through each item in the queue -->
+        {% for item in enqueue_ %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Table: {{ item.table }}</h5> <!-- แสดงหมายเลขโต๊ะ -->
+                    <p class="card-text">Menu ID: {{ item.ID }}</p> <!-- แสดง ID ของเมนู -->
+                    <p class="card-text">Quantity: {{ item.qty }}</p> <!-- แสดงจำนวนที่สั่ง -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No items in the queue.</p> <!-- ถ้าไม่มีข้อมูลในคิว -->
+    {% endif %}
+</div>
 {%endblock%}

@@ -146,9 +146,24 @@ def delete_stock():
 def queue():
     return render_template("queue.html")
 
-@app.route('/admin/queue',methods = ['POST'])
-def _enqueue():
-    return render_template("queue.html")
+@app.route('/admin/queue/enqueue', methods=['GET', 'POST'])
+def enqueue():
+    stock_items = backend.inOrderStock()  # ดึงข้อมูลสินค้าทั้งหมดจาก stock
+    for item in stock_items:
+        id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
+        qty = request.form.get(f'num_{id}', default=0, type=int)  # ดึงค่าจำนวนที่สั่งจากฟอร์ม
+
+        # ตรวจสอบว่าจำนวนที่สั่งมากกว่า 0 ก่อนที่จะ enqueue
+        if qty > 0:
+            enqueue_ = backend.enqueue(1, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
+
+            # ตรวจสอบผลลัพธ์จากการ enqueue
+            if enqueue_ == "Enqueue Success!!":
+                flash(f"Stock item ID {id} added to queue successfully!", "success")
+                return render_template("queue.html",enqueue=enqueue_)
+            else:
+                flash(enqueue, "error")
+
 
 @app.route('/table1')
 def _table1():

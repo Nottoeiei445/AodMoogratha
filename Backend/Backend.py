@@ -72,7 +72,7 @@ class Backend:
         searchTable = self.table.searchTable(table)
         if searchTable is None:
             return "We don't have that table"
-        elif searchTable.status == False:
+        elif searchTable.status == True:
             return "This table is not booked yet" 
         #ถ้าไม่ว่าง Return ข้อความ
         else:
