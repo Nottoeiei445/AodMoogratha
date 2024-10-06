@@ -165,7 +165,7 @@ def delete_stock():
 @app.route('/admin/queue')
 def queue():
     queue_items = backend.displayQueue()  
-    return render_template('queue.html', enqueue_=queue_items) 
+    return render_template('queue.html', enqueue_=queue_items)
 
 @app.route('/admin/queue/enqueue', methods=['GET', 'POST'])
 def enqueue():
@@ -194,8 +194,7 @@ def enqueue():
             else:
                 flash(f"Insufficient stock for item ID: {id}", "error")
                 
-    queue_items = backend.displayQueue()  # อัปเดตคิวจาก backend
-    return render_template("queue.html", enqueue_=queue_items)
+    return redirect(url_for('displayQueue'))
 
 @app.route('/admin/queue/dequeue', methods=['POST'])
 def dequeue():
@@ -212,6 +211,10 @@ def dequeue():
     # หลังจาก dequeue แล้วให้ redirect กลับไปที่หน้า queue โดยไม่ให้เกิดการเพิ่มข้อมูลใหม่
     return redirect(url_for('queue'))
 
+@app.route('/displayqueue')
+def displayQueue():
+    queue_items = backend.displayQueue()  # อัปเดตคิวจาก backend
+    return render_template("displayqueue.html", enqueue_=queue_items)
 
 @app.route('/table1')
 def _table1():
