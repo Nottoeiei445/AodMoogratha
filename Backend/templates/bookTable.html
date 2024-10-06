@@ -1,5 +1,54 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-    <h1>Hello BookTable</h1>
+    <h1>Table List</h1>
+
+    <div class="container my-5">
+        <div class="row">
+            {% for table in display %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Table {{ table.tableNum }}</h5>
+                        <p class="card-text">
+                            Status: {% if table.status %}Booked{% else %}Available{% endif %}
+                        </p>
+                        <p class="card-text">Customer: {{ table.customerNum if table.status else "N/A" }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h2 class="text-center mb-4">จองโต๊ะ</h2>
+    
+        <form action="{{ url_for('_booktable') }}" method="POST" class="form-horizontal">
+            <!-- จำนวนลูกค้า -->
+            <div class="form-group row mb-3">
+                <label for="customer" class="col-sm-3 col-form-label">จำนวนลูกค้า:</label>
+                <div class="col-sm-9">
+                    <input type="number" id="customer" name="customer" class="form-control" min="1" placeholder="ระบุจำนวนลูกค้า" required>
+                </div>
+            </div>
+    
+            <!-- หมายเลขโต๊ะ -->
+            <div class="form-group row mb-3">
+                <label for="table" class="col-sm-3 col-form-label">หมายเลขโต๊ะ:</label>
+                <div class="col-sm-9">
+                    <input type="number" id="table" name="table" class="form-control" min="1" placeholder="ระบุหมายเลขโต๊ะ" required>
+                </div>
+            </div>
+    
+            <!-- ปุ่มยืนยันการจอง -->
+            <div class="form-group row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success btn-block" style="width: 100%; font-size: 18px;">
+                        ยืนยันการจองโต๊ะ
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 {%endblock%}

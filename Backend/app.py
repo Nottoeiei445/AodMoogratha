@@ -22,7 +22,25 @@ def home():
 
 @app.route('/admin/booktable')
 def booktable():
-    return render_template("bookTable.html")
+    displaytable = backend.displayTable()
+    return render_template("bookTable.html",display = displaytable)
+
+@app.route('/admin/booktable',methods = ['GET','POST'])
+def _booktable():
+    try:
+        customer = int(request.form['customer'])
+        table = int(request.form['table'])
+
+        bookTable = backend.book_table(table,customer)
+
+        display = backend.displayTable()
+   
+        if bookTable:
+            return  render_template("bookTable.html",display=display)
+    except ValueError:
+        flash("Invalid input. Please enter valid numbers.", "error")
+        return redirect(url_for('booktable'))
+
 
 @app.route('/admin/stock')
 def _stock():
@@ -138,7 +156,7 @@ def delete_stock():
         else:
             flash("ID does not exist!", "error")
         
-        return redirect(url_for('_stock'))
+        return render_template()
 
     except ValueError:
         flash("Invalid input. Please enter a valid ID.", "error")
@@ -157,14 +175,18 @@ def enqueue():
     for item in stock_items:
         id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
         qty = request.form.get(f'num_{id}', default=0, type=int)  # ดึงค่าจำนวนที่สั่งจากฟอร์ม
+        table = request.form.get('table')
+        table = int(table)
         
         # ตรวจสอบว่า qty ต้องมากกว่า 0 และสินค้ามีจำนวนเพียงพอ
         if qty > 0:
             # ตรวจสอบก่อนว่าสินค้าในสต็อกมีเพียงพอหรือไม่
             stock_item = backend.searchStock(id)
+            queue_items = backend.displayQueue()
+
             # เข้าถึง attributes ของ stock_item โดยตรง แทนการใช้ subscript []
             if stock_item and stock_item.QTY >= qty:
-                enqueue_ = backend.enqueue(1, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
+                enqueue_ = backend.enqueue(table, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
                 if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
                     flash(f"Successfully added {qty} of item ID: {id} to queue.", "success")
                 else:

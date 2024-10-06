@@ -72,7 +72,7 @@ class Backend:
         searchTable = self.table.searchTable(table)
         if searchTable is None:
             return "We don't have that table"
-        elif searchTable.status == True:
+        elif searchTable.status == False:
             return "This table is not booked yet" 
         #ถ้าไม่ว่าง Return ข้อความ
         else:
@@ -87,13 +87,7 @@ class Backend:
                     return "Enqueu Success!!"
 
     def dequeue(self):
-       item = self.queue.dequeue()
-       #ลบออก
-       if  item is not None:
-         print(f"Dequeued item: {item}")
-         return item
-       else:
-         return "Queue is empty"
+        return self.queue.dequeue()
       
 
     def displayQueue(self):
