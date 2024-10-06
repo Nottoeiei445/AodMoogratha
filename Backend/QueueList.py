@@ -24,6 +24,8 @@ class QueueList:
             last.next = newNode
 
     def dequeue(self):
+        if self.first is None:
+            return "Queue is empty."
         queueNum = self.first.queueNum
         tmp = self.first
         self.first = self.first.next

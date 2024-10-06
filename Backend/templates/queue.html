@@ -1,26 +1,29 @@
-{% extends "navBar.html"%}
+{% extends "navBar.html" %}
 
-{%block content%}
+{% block content %}
 <div class="container my-5">
     <h1>Queue</h1>
 
-    {% if enqueue %}
-    <div class="row">
-        <!-- Loop through each item in the queue -->
+    {% if enqueue_ is not none and enqueue_ | length > 0 %}
+    <div class="row" style="max-height: 400px; overflow-y: auto;"> 
         {% for item in enqueue_ %}
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Table: {{ item.table }}</h5> <!-- แสดงหมายเลขโต๊ะ -->
-                    <p class="card-text">Menu ID: {{ item.ID }}</p> <!-- แสดง ID ของเมนู -->
-                    <p class="card-text">Quantity: {{ item.qty }}</p> <!-- แสดงจำนวนที่สั่ง -->
+                    <h5 class="card-title">Table: {{ item.table }}</h5>
+                    <p class="card-text">Menu ID: {{ item.ID }}</p>
+                    <p class="card-text">Quantity: {{ item.qty }}</p>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p>No items in the queue.</p> <!-- ถ้าไม่มีข้อมูลในคิว -->
+    <p>No items in the queue.</p>
     {% endif %}
+
+    <form action="{{ url_for('dequeue') }}" method="POST">
+        <button type="submit" class="btn btn-danger">Dequeue</button>
+    </form>
 </div>
-{%endblock%}
+{% endblock %}

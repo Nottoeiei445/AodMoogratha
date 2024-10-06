@@ -87,7 +87,14 @@ class Backend:
                     return "Enqueu Success!!"
 
     def dequeue(self):
-        return self.queue.dequeue()
+       item = self.queue.dequeue()
+       #ลบออก
+       if  item is not None:
+         print(f"Dequeued item: {item}")
+         return item
+       else:
+         return "Queue is empty"
+      
 
     def displayQueue(self):
         return self.queue.display()

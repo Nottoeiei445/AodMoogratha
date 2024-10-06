@@ -5,12 +5,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Backend import Backend
 from werkzeug.utils import secure_filename
 
+
+
 app = Flask(__name__)
 app.secret_key = 'AodShabuMookrata'
 
 backend = Backend(5)
 
 Menu = [] 
+
+
 
 @app.route('/')
 def home():
@@ -139,30 +143,52 @@ def delete_stock():
     except ValueError:
         flash("Invalid input. Please enter a valid ID.", "error")
         return redirect(url_for('_stock'))
-
-
     
 @app.route('/admin/queue')
 def queue():
-    return render_template("queue.html")
+    queue_items = backend.displayQueue()  
+    return render_template('queue.html', enqueue_=queue_items) 
 
 @app.route('/admin/queue/enqueue', methods=['GET', 'POST'])
 def enqueue():
     stock_items = backend.inOrderStock()  # ดึงข้อมูลสินค้าทั้งหมดจาก stock
+    queue_items = backend.displayQueue()  # ดึงรายการคิวเริ่มต้น
+    
     for item in stock_items:
         id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
         qty = request.form.get(f'num_{id}', default=0, type=int)  # ดึงค่าจำนวนที่สั่งจากฟอร์ม
-
-        # ตรวจสอบว่าจำนวนที่สั่งมากกว่า 0 ก่อนที่จะ enqueue
+        
+        # ตรวจสอบว่า qty ต้องมากกว่า 0 และสินค้ามีจำนวนเพียงพอ
         if qty > 0:
-            enqueue_ = backend.enqueue(1, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
-
-            # ตรวจสอบผลลัพธ์จากการ enqueue
-            if enqueue_ == "Enqueue Success!!":
-                flash(f"Stock item ID {id} added to queue successfully!", "success")
-                return render_template("queue.html",enqueue=enqueue_)
+            # ตรวจสอบก่อนว่าสินค้าในสต็อกมีเพียงพอหรือไม่
+            stock_item = backend.searchStock(id)
+            # เข้าถึง attributes ของ stock_item โดยตรง แทนการใช้ subscript []
+            if stock_item and stock_item.QTY >= qty:
+                enqueue_ = backend.enqueue(1, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
+                if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
+                    flash(f"Successfully added {qty} of item ID: {id} to queue.", "success")
+                else:
+                    flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "error")
             else:
-                flash(enqueue, "error")
+                flash(f"Insufficient stock for item ID: {id}", "error")
+                
+    queue_items = backend.displayQueue()  # อัปเดตคิวจาก backend
+    return render_template("queue.html", enqueue_=queue_items)
+
+@app.route('/admin/queue/dequeue', methods=['POST'])
+def dequeue():
+    item = backend.dequeue()  # เรียกใช้ฟังก์ชัน dequeue
+   
+
+    # ตรวจสอบว่า item ไม่ใช่ None ก่อนที่จะเข้าถึงแอตทริบิวต์
+    if item is not None:
+        # ในที่นี้ item เป็น queueNum ซึ่งเป็นตัวเลข ไม่ใช่ object ของ Node
+        flash(f"Dequeued item from queue number: {item}", "success")
+    else:
+        flash("Queue is empty, nothing to dequeue.", "error")
+
+    # หลังจาก dequeue แล้วให้ redirect กลับไปที่หน้า queue โดยไม่ให้เกิดการเพิ่มข้อมูลใหม่
+    return redirect(url_for('queue'))
 
 
 @app.route('/table1')
