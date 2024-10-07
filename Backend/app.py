@@ -41,6 +41,22 @@ def _booktable():
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('booktable'))
 
+@app.route('/admin/booktable/cleartable',methods= ['GET','POST'])
+def clear_table():
+    try:
+        table_clear = int(request.form['table_clr'])  # รับหมายเลขโต๊ะจากฟอร์ม
+        clear_status = backend.clear_table(table_clear)  # เรียก backend เพื่อเคลียร์โต๊ะ
+
+        if clear_status:
+            flash(f"Table {table_clear} has been cleared successfully.", "success")
+        else:
+            flash(f"Table {table_clear} is already available or does not exist.", "error")
+
+        return redirect(url_for('booktable'))  # กลับไปยังหน้ารายการโต๊ะ
+    except ValueError:
+        flash("Invalid input. Please enter a valid table number.", "error")
+        return redirect(url_for('booktable'))
+
 
 @app.route('/admin/stock')
 def _stock():
