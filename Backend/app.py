@@ -41,7 +41,7 @@ def _booktable():
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('booktable'))
 
-@app.route('/admin/booktable/cleartable',methods= ['GET','POST'])
+@app.route('/admin/booktable/cleartable',methods= ['POST'])
 def clear_table():
     try:
         table_clear = int(request.form['table_clr'])  # รับหมายเลขโต๊ะจากฟอร์ม
@@ -56,7 +56,33 @@ def clear_table():
     except ValueError:
         flash("Invalid input. Please enter a valid table number.", "error")
         return redirect(url_for('booktable'))
-
+@app.route('/admin/booktable/searchtable',methods=['POST'])
+def searchtable():
+    try:
+        table = int(request.form['table'])
+        search = backend.searchTable(table)
+        if search:
+            display = [search]
+            flash(f"Here is Table {table} ")
+            return render_template('booktable.html', display = display)
+        else:
+            flash(f"No have table {table} ")
+    except:
+        return redirect(url_for('booktable'))
+        
+@app.route('/admin/boktable/filtertable',methods=['GET','POST'])
+def filtertable():
+    try:
+        filter_ = request.form.get('filter')
+        if filter_ == 'All':
+            displayfilter = backend.displayTable()
+        elif filter_ == 'Booked':
+            displayfilter = backend.displayBook()
+        elif filter_ =='UnBooked':
+            displayfilter = backend.displayUnBook()
+        return render_template('booktable.html',display = displayfilter)
+    except:
+        return redirect(url_for('booktable'))
 
 @app.route('/admin/stock')
 def _stock():

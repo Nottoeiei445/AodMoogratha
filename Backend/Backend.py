@@ -84,6 +84,7 @@ class Backend:
                     return "We don't have enough"
                 else:
                     self.queue.enqueue(table,ID,qty)
+                    searchStock.QTY -= qty
                     return "Enqueu Success!!"
 
     def dequeue(self):

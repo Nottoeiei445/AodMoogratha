@@ -1,7 +1,34 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-    <h1>Table List</h1>
+<div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <!-- ส่วนของ Table List อยู่ซ้ายมือ -->
+        <h1>Table List</h1>
+
+        <!-- ส่วนของฟอร์มอยู่ขวามือ และเพิ่มระยะห่างระหว่างฟอร์ม -->
+        <div style="display: flex; align-items: center; gap: 50px; " class="mx-5"> <!-- เพิ่ม gap เพื่อสร้างระยะห่าง -->
+            
+            <!-- ฟอร์มสำหรับกรองโต๊ะ -->
+            <form action="{{url_for('filtertable')}}" method="POST" style="display: flex; align-items: center; gap: 10px;">
+                <label for="filter" style="margin-right: 10px;">Show:</label>
+                <select name="filter" id="filter" class="form-select" style="width: auto;">
+                    <option value="All">All</option>
+                    <option value="Booked">Booked</option>
+                    <option value="UnBooked">Unbooked</option>
+                </select>
+                <button class="btn btn-outline-success" type="submit">ยืนยัน</button>
+            </form>
+
+            <!-- ฟอร์มสำหรับค้นหาโต๊ะ -->
+            <form action="{{url_for('searchtable')}}" method="POST" class="d-flex">
+                <input type="number" min="1" max="5" id="table" name="table" class="form-control me-2" placeholder="ค้นหาโต๊ะ" aria-label="Search" style="width: 200px;">
+                <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 
     <div class="container my-5">
         <div class="row">
@@ -25,22 +52,21 @@
         <h2 class="text-center mb-4">จองโต๊ะ</h2>
     
         <form action="{{ url_for('_booktable') }}" method="POST" class="form-horizontal">
-            <!-- จำนวนลูกค้า -->
-            <div class="form-group row mb-3">
-                <label for="customer" class="col-sm-3 col-form-label">จำนวนลูกค้า:</label>
-                <div class="col-sm-9">
-                    <input type="number" id="customer" name="customer" class="form-control" min="1" placeholder="ระบุจำนวนลูกค้า" required>
-                </div>
-            </div>
-    
-            <!-- หมายเลขโต๊ะ -->
+
             <div class="form-group row mb-3">
                 <label for="table" class="col-sm-3 col-form-label">หมายเลขโต๊ะ:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="table" name="table" class="form-control" min="1" placeholder="ระบุหมายเลขโต๊ะ" required>
+                    <input type="number" id="table" name="table" class="form-control" min="1" max="5" placeholder="ระบุหมายเลขโต๊ะ" required>
                 </div>
             </div>
-    
+
+            <div class="form-group row mb-3">
+                <label for="customer" class="col-sm-3 col-form-label">จำนวนลูกค้า:</label>
+                <div class="col-sm-9">
+                    <input type="number" id="customer" name="customer" class="form-control" min="1" max="4" placeholder="ระบุจำนวนลูกค้า" required>
+                </div>
+            </div>
+
             <!-- ปุ่มยืนยันการจอง -->
             <div class="form-group row">
                 <div class="col-12">
@@ -61,14 +87,14 @@
             <div class="form-group row mb-3">
                 <label for="clear_table" class="col-sm-3 col-form-label">หมายเลขโต๊ะ:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="table_clr" name="table_clr" class="form-control" min="1" placeholder="ระบุหมายเลขโต๊ะที่ต้องการเคลียร์" required>
+                    <input type="number" id="table_clr" name="table_clr" class="form-control" min="1" max="5" placeholder="ระบุหมายเลขโต๊ะที่ต้องการเคลียร์" required>
                 </div>
             </div>
 
             <!-- ปุ่มเคลียร์โต๊ะ -->
             <div class="form-group row">
                 <div class="col-12">
-                    <button type="submit" class="btn btn-danger btn-block" style="width: 100%; font-size: 18px;">
+                    <button type="submit" class="btn btn-danger btn-block" style="width: 100%; font-size: 18px;" >
                         เคลียร์โต๊ะ
                     </button>
                 </div>

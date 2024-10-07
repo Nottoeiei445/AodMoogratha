@@ -1,28 +1,62 @@
 {% extends "navBar.html"%}
 
 {%block content%}
-<div class = "container my-2">
-    <h2>แบบฟอร์ม</h2>
-    <form action = "{{url_for('AddMenu')}}" method="POST" enctype="multipart/form-data"> <!-- action คือจะกระทำกับฟังก์ชันอะไร, method คือทำอะไร -->
-        <div>
-            <label for="">ID</label>
-            <input type="number" id = "id" name="id" class="form-control" required> 
+<div class="container my-4">
+    <h2 class="text-center mb-4">แบบฟอร์มเพิ่มเมนู</h2>
+    <form action="{{ url_for('AddMenu') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="number" id="id" name="id" class="form-control" required>
+            <div class="invalid-feedback">
+                กรุณากรอก ID
+            </div>
         </div>
-        <div>
-            <label for="">ชื่อเมนู</label>
-            <input type="text" id = "name" name="name" class="form-control" required> 
+
+        <div class="mb-3">
+            <label for="name" class="form-label">ชื่อเมนู</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+            <div class="invalid-feedback">
+                กรุณากรอกชื่อเมนู
+            </div>
         </div>
-        <div class="my-2">
-            <label for="">จำนวน</label>
-            <input type="number" id="number" name="num" min="1" required>
+
+        <div class="mb-3">
+            <label for="number" class="form-label">จำนวน</label>
+            <input type="number" id="number" name="num" min="1" class="form-control" required>
+            <div class="invalid-feedback">
+                กรุณากรอกจำนวน
+            </div>
         </div>
-        <div class="my-2">
-            <label for="">รูปภาพ</label>
-            <input type="file" id="image" name="img" required>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">รูปภาพ</label>
+            <input type="file" id="image" name="img" class="form-control" required>
+            <div class="invalid-feedback">
+                กรุณาเลือกรูปภาพ
+            </div>
         </div>
-        <input type="submit" value="ส่งข้อมูล" class="btn btn-success my-2">
+
+        <button type="submit" class="btn btn-success btn-block">ส่งข้อมูล</button>
     </form>
     <hr>
 </div>
+
+<!-- Script สำหรับการตรวจสอบความถูกต้องของฟอร์ม -->
+<script>
+    // เรียกใช้ฟังก์ชันการตรวจสอบฟอร์ม
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 {%endblock%}
 

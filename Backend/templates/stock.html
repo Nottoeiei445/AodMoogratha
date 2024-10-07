@@ -4,16 +4,17 @@
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h1>Stock</h1>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <a href="{{ url_for('addStock') }}">Add New Stock</a>
-        </div>
-        <div class="container my-3">
-            <form action="{{url_for('searchStock')}}" method="GET" class="d-flex">
-                <input type="number" id="id" name="id" class="form-control me-2" placeholder="ค้นหาสินค้า..." aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+            <form action="{{ url_for('addStock') }}" method="GET" class="d-flex">
+                <button class="btn btn-outline-success mx-5" type="submit">Add New Stock</button>
             </form>
         </div>
+    </div>
+
+    <div class="container my-3">
+        <form action="{{url_for('searchStock')}}" method="GET" class="d-flex">
+            <input type="number" id="id" name="id" class="form-control me-2" placeholder="ค้นหาสินค้า..." aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+        </form>
     </div>
     
 
