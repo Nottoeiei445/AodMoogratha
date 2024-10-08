@@ -4,17 +4,12 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Backend import Backend
 from werkzeug.utils import secure_filename
-
-
-
 app = Flask(__name__)
 app.secret_key = 'AodShabuMookrata'
 
 backend = Backend(5)
 
 Menu = [] 
-
-
 
 @app.route('/')
 def home():
@@ -35,9 +30,11 @@ def _booktable():
 
         display = backend.displayTable()
    
-        if bookTable:
+        if bookTable == f"Table {table} is already booked!":
+            flash(f"โต๊ะ {table} ไม่ว่าง", "danger")
+        else:
             flash(f"จองโต๊ะ {table} สำเร็จ", "success")  # แสดงข้อความเมื่อจองสำเร็จ
-            return render_template("bookTable.html", display=display)
+        return render_template("bookTable.html", display=display)
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('booktable'))
@@ -47,13 +44,13 @@ def clear_table():
     try:
         table_clear = int(request.form['table_clr'])  # รับหมายเลขโต๊ะจากฟอร์ม
         clear_status = backend.clear_table(table_clear)  # เรียก backend เพื่อเคลียร์โต๊ะ
+        display = backend.displayTable()
 
-        if clear_status:
-            flash(f"Table {table_clear} has been cleared successfully.", "success")
+        if clear_status == f"Table {table_clear} is not booked yet!":
+            flash(f"Table {table_clear} is already available or does not exist.", "danger")
         else:
-            flash(f"Table {table_clear} is already available or does not exist.", "error")
-
-        return redirect(url_for('booktable'))  # กลับไปยังหน้ารายการโต๊ะ
+            flash(f"Table {table_clear} has been cleared successfully.", "success")
+        return render_template("bookTable.html",display=display)
     except ValueError:
         flash("Invalid input. Please enter a valid table number.", "error")
         return redirect(url_for('booktable'))
@@ -130,12 +127,11 @@ def AddMenu(): #method รับค่า
         # เพิ่มเมนูใหม่เข้า stock พร้อมชื่อไฟล์รูปภาพ (ถ้ามี)  
         inserted = backend.insertStock(id, name, number, filename)# เพิ่มเมนูใหม่เข้า stock
 
-        if inserted:
-            flash("Stock item added successfully!", "success")
-            return redirect(url_for('_stock'))
+        if inserted == "ID is already exist":
+            flash("ID already exists!", "danger")
         else:
-            flash("ID already exists!", "error")
-            return redirect(url_for('addStock'))
+            flash("Stock item added successfully!", "success")
+        return redirect(url_for('addStock'))  
 
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
@@ -169,26 +165,27 @@ def delete_stock():
         # เรียก backend เพื่อลบ stock item ที่มี id ตรงกับที่ส่งมา
         delete_status = backend.deleteStock(id)
 
-        if delete_status:
-            flash("Stock item deleted successfully!", "success")
+        if delete_status == "ID is not exist.":
+            flash("ID does not exist!", "danger")
         else:
-            flash("ID does not exist!", "error")
+            flash("Stock item deleted successfully!", "success")
         
         return redirect(url_for('_stock'))
 
     except ValueError:
-        flash("Invalid input. Please enter a valid ID.", "error")
+        flash("Invalid input. Please enter a valid ID.", "danger")
         return redirect(url_for('_stock'))
     
 @app.route('/admin/queue')
 def queue():
-    queue_items = backend.displayQueue()  
+    queue_items = backend.displayQueue() 
     return render_template('queue.html', enqueue_=queue_items)
 
 @app.route('/admin/queue/enqueue', methods=['GET', 'POST'])
 def enqueue():
     stock_items = backend.inOrderStock()  # ดึงข้อมูลสินค้าทั้งหมดจาก stock
     queue_items = backend.displayQueue()  # ดึงรายการคิวเริ่มต้น
+    source = request.form['source']
     
     for item in stock_items:
         id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
@@ -208,11 +205,20 @@ def enqueue():
                 if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
                     flash(f"Successfully added {qty} of item ID: {id} to queue.", "success")
                 else:
-                    flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "error")
+                    flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "danger")
             else:
                 flash(f"Insufficient stock for item ID: {id}", "error")
-                
-    return redirect(url_for('displayQueue'))
+    if source == '1':
+        return redirect(url_for('table1'))
+    elif source == '2':
+        return redirect(url_for('table2'))
+    elif source == '3':
+            return redirect(url_for('table3'))
+    elif source == '4':
+        return redirect(url_for('table4'))
+    elif source == '5':
+        return redirect(url_for('table5'))
+
 
 @app.route('/admin/queue/dequeue', methods=['POST'])
 def dequeue():

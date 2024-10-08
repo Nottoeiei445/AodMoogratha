@@ -78,7 +78,7 @@ class Backend:
                 else:
                     self.queue.enqueue(table,ID,qty)
                     searchStock.QTY -= qty
-                    return "Enqueu Success!!"
+                    return "Enqueue Success!!"
 
     def dequeue(self):
         return self.queue.dequeue()

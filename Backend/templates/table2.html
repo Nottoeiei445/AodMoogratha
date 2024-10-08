@@ -8,7 +8,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Table 2</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Table 2</h1>
+        <form action="{{url_for('displayQueue')}}" method="POST" class="d-flex" >
+            <button class="btn btn-success mx-5" type="submit">Display Queue</button>
+        </form>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container my-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
     <div class="text-center my-4">
         <h1>Menu</h1>
     </div>
@@ -43,6 +60,7 @@
                 {% endfor %}
             </div>
         </div>
+        <input type="hidden" name="source" value="2">
         <input type="hidden" name="table" value="2">
         <!-- ปุ่มเพิ่มลงในคิว -->
         <div class="container-fluid" style="position: fixed; bottom: 0; left: 0; right: 0; padding-left: 15px; padding-right: 15px;">
