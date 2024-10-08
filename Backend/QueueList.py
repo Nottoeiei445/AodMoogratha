@@ -36,7 +36,7 @@ class QueueList:
         result = []
         current = self.first
         if current is None:
-            return "No queue"
+            return result
         while current:
             result.append({
                 'queueNum': current.queueNum,

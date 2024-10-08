@@ -39,11 +39,11 @@
                     <img src="{{ url_for('static', filename='images/' + item['IMG']) }}" 
                          alt="{{ item['Name'] }}" 
                          class="card-img-top" 
-                         style="height: 200px; object-fit: cover;"> <!-- ปรับขนาดรูปภาพให้เท่ากัน -->
+                         style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h6 class="card-title">Menu ID: {{ item['ID'] }}</h6>
-                        <h5 class="card-title">{{ item['Name'] }}</h5> <!-- ชื่อสินค้า -->
-                        <p class="card-text">Quantity: {{ item['QTY'] }}</p> <!-- จำนวนสินค้า -->
+                        <h5 class="card-title">{{ item['Name'] }}</h5>
+                        <p class="card-text">Quantity: {{ item['QTY'] }}</p>
                     </div>
                 </div>
             </div>

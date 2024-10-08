@@ -36,7 +36,7 @@ def _booktable():
             flash(f"จองโต๊ะ {table} สำเร็จ", "success")  # แสดงข้อความเมื่อจองสำเร็จ
         return render_template("bookTable.html", display=display)
     except ValueError:
-        flash("Invalid input. Please enter valid numbers.", "error")
+        flash("Invalid input. Please enter valid numbers.", "danger")
         return redirect(url_for('booktable'))
 
 @app.route('/admin/booktable/cleartable',methods= ['POST'])
@@ -52,7 +52,7 @@ def clear_table():
             flash(f"Table {table_clear} has been cleared successfully.", "success")
         return render_template("bookTable.html",display=display)
     except ValueError:
-        flash("Invalid input. Please enter a valid table number.", "error")
+        flash("Invalid input. Please enter a valid table number.", "danger")
         return redirect(url_for('booktable'))
 @app.route('/admin/booktable/searchtable',methods=['POST'])
 def searchtable():
@@ -61,7 +61,7 @@ def searchtable():
         search = backend.searchTable(table)
         if search:
             display = [search]
-            flash(f"Here is Table {table} ")
+            flash(f"Here is Table {table} ","success")
             return render_template('booktable.html', display = display)
         else:
             flash(f"No have table {table} ")
@@ -85,7 +85,7 @@ def filtertable():
 @app.route('/admin/stock')
 def _stock():
     stock_items = backend.inOrderStock() 
-    return render_template('stock.html', stock_items=stock_items) #ส่งไปที่หน้า stock.html
+    return render_template('stock.html', stock_items=stock_items) 
 
 @app.route('/admin/stock/searchstock',methods=['GET'])
 def searchStock():
@@ -94,15 +94,15 @@ def searchStock():
 
         searchstock = backend.searchStock(id)
         if searchstock:
-            stock_items = [searchstock]  # หากพบสินค้า ให้ส่งสินค้าเดียวนั้นกลับไปแสดงผล
+            stock_items = [searchstock]  # หากพบสินค้าให้ส่งสินค้าเดียวนั้นกลับไปแสดงผล
             flash("Found here!", "success")
-            return render_template('stock.html', stock_items=stock_items)  # ส่งผลการค้นหากลับไปที่หน้า stock.html
+            return render_template('stock.html', stock_items=stock_items)  #ส่งผลการค้นหากลับไปที่หน้า stock.html
         elif id=="":
             return render_template('stock.html', stock_items=stock_items)
         
         else:
-            flash("ID is not exist", "error")
-            return redirect(url_for('_stock'))  # ถ้าไม่พบสินค้าจะกลับไปที่หน้า stock ทั้งหมด
+            flash("ID is not exist", "danger")
+            return redirect(url_for('_stock'))  #ถ้าไม่พบสินค้าจะกลับไปที่หน้า stock ทั้งหมด
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('_stock'))
@@ -124,8 +124,7 @@ def AddMenu(): #method รับค่า
             filename = secure_filename(img_file.filename)
             # ไม่บันทึกไฟล์ลงในเครื่อง แค่เก็บชื่อไฟล์ในฐานข้อมูล
 
-        # เพิ่มเมนูใหม่เข้า stock พร้อมชื่อไฟล์รูปภาพ (ถ้ามี)  
-        inserted = backend.insertStock(id, name, number, filename)# เพิ่มเมนูใหม่เข้า stock
+        inserted = backend.insertStock(id, name, number, filename) 
 
         if inserted == "ID is already exist":
             flash("ID already exists!", "danger")
@@ -151,10 +150,10 @@ def update_stock():
             flash("Update Successfully","success")
             return redirect(url_for("_stock"))
         else:
-            flash("ID is not exist","error")
+            flash("ID is not exist","danger")
             return redirect(url_for('updatestock'))
     except ValueError:
-        flash("Invalid input. Please enter valid numbers.", "error")
+        flash("Invalid input. Please enter valid numbers.", "danger")
         return redirect(url_for('updatestock'))
     
 @app.route('/admin/stock/delete', methods=['POST'])
@@ -199,7 +198,6 @@ def enqueue():
             stock_item = backend.searchStock(id)
             queue_items = backend.displayQueue()
 
-            # เข้าถึง attributes ของ stock_item โดยตรง แทนการใช้ subscript []
             if stock_item and stock_item.QTY >= qty:
                 enqueue_ = backend.enqueue(table, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
                 if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
@@ -207,7 +205,7 @@ def enqueue():
                 else:
                     flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "danger")
             else:
-                flash(f"Insufficient stock for item ID: {id}", "error")
+                flash(f"Insufficient stock for item ID: {id}", "danger")
     if source == '1':
         return redirect(url_for('table1'))
     elif source == '2':
@@ -222,22 +220,18 @@ def enqueue():
 
 @app.route('/admin/queue/dequeue', methods=['POST'])
 def dequeue():
-    item = backend.dequeue()  # เรียกใช้ฟังก์ชัน dequeue
+    item = backend.dequeue() 
    
-
-    # ตรวจสอบว่า item ไม่ใช่ None ก่อนที่จะเข้าถึงแอตทริบิวต์
-    if item is not None:
-        # ในที่นี้ item เป็น queueNum ซึ่งเป็นตัวเลข ไม่ใช่ object ของ Node
-        flash(f"Dequeued item from queue number: {item}", "success")
+    if item == "Queue is empty.":
+        flash("Queue is empty, nothing to dequeue.", "danger")
     else:
-        flash("Queue is empty, nothing to dequeue.", "error")
+        flash(f"Dequeued item from queue number: {item}", "success")
 
-    # หลังจาก dequeue แล้วให้ redirect กลับไปที่หน้า queue โดยไม่ให้เกิดการเพิ่มข้อมูลใหม่
     return redirect(url_for('queue'))
 
 @app.route('/displayqueue')
 def displayQueue():
-    queue_items = backend.displayQueue()  # อัปเดตคิวจาก backend
+    queue_items = backend.displayQueue()  
     return render_template("displayqueue.html", enqueue_=queue_items)
 
 @app.route('/table1')

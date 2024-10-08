@@ -10,7 +10,7 @@
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h1>Table 5</h1>
-        <form action="{{url_for('displayQueue')}}" method="POST" class="d-flex" >
+        <form action="{{url_for('displayQueue')}}" method="GET" class="d-flex" >
             <button class="btn btn-success mx-5" type="submit">Display Queue</button>
         </form>
     </div>
@@ -26,6 +26,9 @@
         </div>
     {% endif %}
     {% endwith %}
+    <div class="text-center my-4">
+        <h1>Menu</h1>
+    </div>
     <form action="{{url_for('enqueue')}}" method="POST" enctype="multipart/form-data">
         <div class="container my-4">
             <div class="row">
