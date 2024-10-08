@@ -63,14 +63,6 @@ class Stock:
         else:
             return False
 
-    def updateIMG(self, ID, IMG):
-        updateNode = self.search(ID)
-        if updateNode is not None:
-            updateNode.IMG = IMG
-            return True
-        else:
-            return False
-
     def _delete(self, ptr, ID):
         if ptr is None:
             return ptr, False

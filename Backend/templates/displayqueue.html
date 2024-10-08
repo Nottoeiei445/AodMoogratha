@@ -13,7 +13,7 @@
         <h1>Queue</h1>
     
         {% if enqueue_ is not none and enqueue_ | length > 0 %}
-        <div class="row" style="max-height: 400px; overflow-y: auto;"> 
+        <div class="row" style="max-height: 500px; overflow-y: auto;"> 
             {% for item in enqueue_ %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -29,6 +29,7 @@
         {% else %}
         <p>No items in the queue.</p>
         {% endif %}
+        <button type="button" class="btn btn-danger" onclick="window.location.href=document.referrer">Back</button>
     </div>   
 </body>
 </html>

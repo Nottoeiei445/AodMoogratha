@@ -36,7 +36,8 @@ def _booktable():
         display = backend.displayTable()
    
         if bookTable:
-            return  render_template("bookTable.html",display=display)
+            flash(f"จองโต๊ะ {table} สำเร็จ", "success")  # แสดงข้อความเมื่อจองสำเร็จ
+            return render_template("bookTable.html", display=display)
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('booktable'))
@@ -111,7 +112,7 @@ def searchStock():
 
 
 @app.route('/admin/stock/addstock') 
-def addStock(): #METHOD แสดงหน้า addstock.html
+def addStock(): #METHOD แสดงหน้า addstock.html   
     return render_template("addStock.html")
 
 @app.route('/admin/stock/addstock/insertstock',methods=['GET','POST']) 
@@ -139,53 +140,28 @@ def AddMenu(): #method รับค่า
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
         return redirect(url_for('addStock'))
-    
-@app.route('/admin/stock/updateqty',methods=['PUT'])
-def updateQTY():
+
+@app.route('/admin/stock/updatestock')
+def updatestock():
+    return render_template('updateStock.html')
+
+@app.route('/admin/stock/updateqty',methods=['GET','POST'])
+def update_stock():
     try:
         id = int(request.form['id'])
         number = int(request.form['num'])
-
-        updateQTY = backend.updateQTY(id,number)
+        updateQTY = backend.updateQTY(id,number)           
         if  updateQTY:
             flash("Update Successfully","success")
             return redirect(url_for("_stock"))
         else:
             flash("ID is not exist","error")
-            return redirect(url_for('updateqty'))
+            return redirect(url_for('updatestock'))
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "error")
-        return redirect(url_for('updateqty'))
-
-@app.route('/admin/stock/updateimg',methods=['PUT'])
-def updateIMG():
-    try:
-        id = int(request.form['id']) #รับ id
-        img_file = request.files['img'] #รับ img
-        if img_file: #เซฟไฟล์รูปภาพ
-            filename = secure_filename(img_file.filename)
-
-            # ตรวจสอบว่ามีโฟลเดอร์ static/images แล้วหรือไม่
-            img_directory = os.path.join('static', 'images')
-            if img_file:
-                filename = secure_filename(img_file.filename)
-            # ไม่บันทึกไฟล์ลงในเครื่อง แค่เก็บชื่อไฟล์ในฐานข้อมูล
-
-        
-        updateIMG = backend.updateIMG(id,filename)
-
-        if updateIMG:
-            flash("Update Image Succesfully!", "success")
-            return redirect(url_for('_stock'))
-        else:
-            flash("ID is not exists!", "error")
-            return redirect(url_for('updateimg'))
-
-    except ValueError:
-        flash("Invalid input. Please enter valid numbers.", "error")
-        return redirect(url_for('updateimg'))
+        return redirect(url_for('updatestock'))
     
-@app.route('/admin/stock/delete', methods=['DELETE'])
+@app.route('/admin/stock/delete', methods=['POST'])
 def delete_stock():
     try:
         id = int(request.form['id'])  # รับ ID ของสินค้าที่ต้องการลบ
@@ -198,7 +174,7 @@ def delete_stock():
         else:
             flash("ID does not exist!", "error")
         
-        return render_template()
+        return redirect(url_for('_stock'))
 
     except ValueError:
         flash("Invalid input. Please enter a valid ID.", "error")

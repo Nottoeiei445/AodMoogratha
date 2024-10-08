@@ -51,13 +51,6 @@ class Backend:
             return "ID is not exist"
         else:
             return self.stock.updateQTY(ID,QTY)
-
-    def updateIMG(self, ID, IMG):
-        searchNode = self.stock.search(ID)
-        if searchNode is None:
-            return "ID is not exist"
-        else:
-            return self.stock.updateIMG(ID,IMG)
         
     def deleteStock(self, ID):
         searchNode = self.stock.search(ID)
