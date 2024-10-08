@@ -259,7 +259,7 @@ def displayQueue():
     return render_template("displayqueue.html", enqueue_=queue_items)
 
 @app.route('/table1')
-def _table1():
+def table1():
     stock_items = backend.inOrderStock()
     return render_template("table1.html",stock_items=stock_items)
 

@@ -7,7 +7,7 @@
         <h1>Table List</h1>
 
         <!-- ส่วนของฟอร์มอยู่ขวามือ และเพิ่มระยะห่างระหว่างฟอร์ม -->
-        <div style="display: flex; align-items: center; gap: 50px; " class="mx-5"> <!-- เพิ่ม gap เพื่อสร้างระยะห่าง -->
+        <div style="display: flex; align-items: center; gap: 25px; " class="mx-1"> <!-- เพิ่ม gap เพื่อสร้างระยะห่าง -->
             
             <!-- ฟอร์มสำหรับกรองโต๊ะ -->
             <form action="{{url_for('filtertable')}}" method="POST" style="display: flex; align-items: center; gap: 10px;">
@@ -21,8 +21,8 @@
             </form>
 
             <!-- ฟอร์มสำหรับค้นหาโต๊ะ -->
-            <form action="{{url_for('searchtable')}}" method="POST" class="d-flex">
-                <input type="number" min="1" max="5" id="table" name="table" class="form-control me-2" placeholder="ค้นหาโต๊ะ" aria-label="Search" style="width: 200px;">
+            <form action="{{url_for('searchtable')}}" method="POST" class="d-flex" >
+                <input type="number" min="1" max="5" id="table" name="table" class="form-control me-2" placeholder="ค้นหาโต๊ะ" aria-label="Search" >
                 <button class="btn btn-outline-success" type="submit">ค้นหา</button>
             </form>
         </div>
