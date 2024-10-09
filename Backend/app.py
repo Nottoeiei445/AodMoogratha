@@ -31,9 +31,9 @@ def _booktable():
         display = backend.displayTable()
    
         if bookTable == f"Table {table} is already booked!":
-            flash(f"โต๊ะ {table} ไม่ว่าง", "danger")
+            flash(f"Table {table} is already booked!", "danger")
         else:
-            flash(f"จองโต๊ะ {table} สำเร็จ", "success")  # แสดงข้อความเมื่อจองสำเร็จ
+            flash(f"Table {table} successfully booked for {customer} customer(s).", "success")  # แสดงข้อความเมื่อจองสำเร็จ
         return render_template("bookTable.html", display=display)
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "danger")
@@ -104,7 +104,7 @@ def searchStock():
             flash("ID is not exist", "danger")
             return redirect(url_for('_stock'))  #ถ้าไม่พบสินค้าจะกลับไปที่หน้า stock ทั้งหมด
     except ValueError:
-        flash("Invalid input. Please enter valid numbers.", "error")
+        flash("Invalid input. Please enter valid numbers.", "danger")
         return redirect(url_for('_stock'))
 
 
@@ -133,7 +133,7 @@ def AddMenu(): #method รับค่า
         return redirect(url_for('addStock'))  
 
     except ValueError:
-        flash("Invalid input. Please enter valid numbers.", "error")
+        flash("Invalid input. Please enter valid numbers.", "danger")
         return redirect(url_for('addStock'))
 
 @app.route('/admin/stock/updatestock')
@@ -146,11 +146,11 @@ def update_stock():
         id = int(request.form['id'])
         number = int(request.form['num'])
         updateQTY = backend.updateQTY(id,number)           
-        if  updateQTY:
-            flash("Update Successfully","success")
-            return redirect(url_for("_stock"))
-        else:
+        if  updateQTY == "ID is not exist":
             flash("ID is not exist","danger")
+            return redirect(url_for("updatestock"))
+        else:
+            flash("Update Successfully","success")
             return redirect(url_for('updatestock'))
     except ValueError:
         flash("Invalid input. Please enter valid numbers.", "danger")

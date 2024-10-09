@@ -1,0 +1,13 @@
+1.เช็คว่ามี Flask , reportlabในเครื่องไหม
+   เข้า command prompt พิมพ์ pip freeze
+2.ถ้าไม่มี Flask ให้ติดตั้ง Flask 
+   พิมพ์ pip install Flask
+   pip install reportlab
+3.เมื่อติดตั้งเสร็จให้เช็คว่าติดตั้งสำเร็จไหม
+   พิมพ์ pip freeze
+-ทำการ clone โปรเจคมาไว้ที่ D:/Code
+  git clone https://github.com/Nottoeiei445/AodMoogratha.git
+4.รันไฟล์ app.py
+
+มีอะไรผิดพลาดโปรดแจ้ง....                                    	แอดมินอ๊อต
+			                 นุติพงษ์ เกิดด่าน

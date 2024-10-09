@@ -13,12 +13,12 @@
                     <option value="Booked">Booked</option>
                     <option value="UnBooked">Unbooked</option>
                 </select>
-                <button class="btn btn-outline-success" type="submit">ยืนยัน</button>
+                <button class="btn btn-outline-success" type="submit">Confirm</button>
             </form>
 
             <form action="{{url_for('searchtable')}}" method="POST" class="d-flex" >
-                <input type="number" min="1" max="5" id="table" name="table" class="form-control me-2" placeholder="ค้นหาโต๊ะ" aria-label="Search" >
-                <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+                <input type="number" min="1" max="5" id="table" name="table" class="form-control me-2" placeholder="Search Table" aria-label="Search" >
+                <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
     </div>
@@ -53,28 +53,28 @@
         </div>
     </div>
     <div class="container my-5">
-        <h2 class="text-center mb-4">จองโต๊ะ</h2>
+        <h2 class="text-center mb-4">Book Table</h2>
     
         <form action="{{ url_for('_booktable') }}" method="POST" class="form-horizontal">
 
             <div class="form-group row mb-3">
-                <label for="table" class="col-sm-3 col-form-label">หมายเลขโต๊ะ:</label>
+                <label for="table" class="col-sm-3 col-form-label">Table Number:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="table" name="table" class="form-control" min="1" max="5" placeholder="ระบุหมายเลขโต๊ะ" required>
+                    <input type="number" id="table" name="table" class="form-control" min="1" max="5" placeholder="Enter a table number.." required>
                 </div>
             </div>
 
             <div class="form-group row mb-3">
-                <label for="customer" class="col-sm-3 col-form-label">จำนวนลูกค้า:</label>
+                <label for="customer" class="col-sm-3 col-form-label">Customer:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="customer" name="customer" class="form-control" min="1" max="4" placeholder="ระบุจำนวนลูกค้า" required>
+                    <input type="number" id="customer" name="customer" class="form-control" min="1" max="4" placeholder="Enter customer..." required>
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-12">
                     <button type="submit" class="btn btn-success btn-block" style="width: 100%; font-size: 18px;">
-                        ยืนยันการจองโต๊ะ
+                        Confirm
                     </button>
                 </div>
             </div>
@@ -82,20 +82,20 @@
     </div>
 
     <div class="container my-5">
-        <h2 class="text-center mb-4">เคลียร์โต๊ะ</h2>
+        <h2 class="text-center mb-4">Clear Table</h2>
 
         <form action="{{ url_for('clear_table') }}" method="POST" class="form-horizontal">
             <div class="form-group row mb-3">
-                <label for="clear_table" class="col-sm-3 col-form-label">หมายเลขโต๊ะ:</label>
+                <label for="clear_table" class="col-sm-3 col-form-label">Table Number:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="table_clr" name="table_clr" class="form-control" min="1" max="5" placeholder="ระบุหมายเลขโต๊ะที่ต้องการเคลียร์" required>
+                    <input type="number" id="table_clr" name="table_clr" class="form-control" min="1" max="5" placeholder="Enter a table number..." required>
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-12">
                     <button type="submit" class="btn btn-danger btn-block" style="width: 100%; font-size: 18px;" >
-                        เคลียร์โต๊ะ
+                        Confirm
                     </button>
                 </div>
             </div>

@@ -2,29 +2,41 @@
 {% extends "navBar.html"%}
 
 {%block content%}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container my-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
     <div class="container my-5">
         <h2 class="text-center mb-4">Update Stock Form</h2>
     
         <form action="{{ url_for('update_stock') }}" method="POST" class="form-horizontal">
 
             <div class="form-group row mb-3">
-                <label for="table" class="col-sm-3 col-form-label">กรุณากรอก ID:</label>
+                <label for="table" class="col-sm-3 col-form-label">ID:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="id" name="id" class="form-control"  placeholder="กรอก ID" required>
+                    <input type="number" id="id" name="id" class="form-control"  placeholder="Please enter ID" required>
                 </div>
             </div>
 
             <div class="form-group row mb-3">
-                <label for="customer" class="col-sm-3 col-form-label">จำนวนรายการ:</label>
+                <label for="customer" class="col-sm-3 col-form-label">Quantity:</label>
                 <div class="col-sm-9">
-                    <input type="number" id="number" name="num" class="form-control" min="1"  placeholder="กรอกจำนวน" required>
+                    <input type="number" id="number" name="num" class="form-control" min="1"  placeholder="Please enter Quantity" required>
                 </div>
             </div>
             <!-- ปุ่มยืนยันการจอง -->
             <div class="form-group row">
                 <div class="col-12">
                     <button type="submit" class="btn btn-success btn-block" style="width: 100%; font-size: 18px;">
-                        ยืนยันการอัพเดท
+                        Confirm
                     </button>
                 </div>
             </div>

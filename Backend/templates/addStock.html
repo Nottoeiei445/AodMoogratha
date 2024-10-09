@@ -14,41 +14,44 @@
     {% endif %}
     {% endwith %}
 <div class="container my-4">
-    <h2 class="text-center mb-4">แบบฟอร์มเพิ่มเมนู</h2>
+    <h2 class="text-center mb-4">Add Stock Form</h2>
     <form action="{{ url_for('AddMenu') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
         <div class="mb-3">
             <label for="id" class="form-label">ID</label>
             <input type="number" id="id" name="id" class="form-control" required>
             <div class="invalid-feedback">
-                กรุณากรอก ID
+                Please enter a valid ID
             </div>
         </div>
 
         <div class="mb-3">
-            <label for="name" class="form-label">ชื่อเมนู</label>
+            <label for="name" class="form-label">Menu</label>
             <input type="text" id="name" name="name" class="form-control" required>
             <div class="invalid-feedback">
-                กรุณากรอกชื่อเมนู
+                Please enter a menu name 
             </div>
         </div>
 
         <div class="mb-3">
-            <label for="number" class="form-label">จำนวน</label>
+            <label for="number" class="form-label">Quantity</label>
             <input type="number" id="number" name="num" min="1" class="form-control" required>
             <div class="invalid-feedback">
-                กรุณากรอกจำนวน
+                Please enter a valid quantity
             </div>
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">รูปภาพ</label>
-            <input type="file" id="image" name="img" class="form-control" required>
+            <label for="image" class="form-label">Image</label>
+            <input type="file" id="image" name="img" class="form-control"  required>
             <div class="invalid-feedback">
-                กรุณาเลือกรูปภาพ
+                Please upload an image
             </div>
         </div>
+       
+       
+        
 
-        <button type="submit" class="btn btn-success btn-block">ส่งข้อมูล</button>
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
     </form>
     <hr>
 </div>
