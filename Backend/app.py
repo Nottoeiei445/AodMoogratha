@@ -182,52 +182,57 @@ def queue():
 
 @app.route('/admin/queue/enqueue', methods=['GET', 'POST'])
 def enqueue():
-    stock_items = backend.inOrderStock()  # ดึงข้อมูลสินค้าทั้งหมดจาก stock
-    queue_items = backend.displayQueue()  # ดึงรายการคิวเริ่มต้น
-    source = request.form['source']
-    
-    for item in stock_items:
-        id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
-        qty = request.form.get(f'num_{id}', default=0, type=int)  # ดึงค่าจำนวนที่สั่งจากฟอร์ม
-        table = request.form.get('table')
-        table = int(table)
-        
-        # ตรวจสอบว่า qty ต้องมากกว่า 0 และสินค้ามีจำนวนเพียงพอ
-        if qty > 0:
-            # ตรวจสอบก่อนว่าสินค้าในสต็อกมีเพียงพอหรือไม่
-            stock_item = backend.searchStock(id)
-            queue_items = backend.displayQueue()
+        try:
+            stock_items = backend.inOrderStock()  # ดึงข้อมูลสินค้าทั้งหมดจาก stock
+            source = request.form['source']
+            
+            for item in stock_items:
+                id = item['ID']  # กำหนดค่า id จากสินค้าในลูป
+                qty = request.form.get(f'num_{id}', default=0, type=int)  # ดึงค่าจำนวนที่สั่งจากฟอร์ม
+                table = request.form.get('table')
+                table = int(table)
+                
+                # ตรวจสอบว่า qty ต้องมากกว่า 0 และสินค้ามีจำนวนเพียงพอ
+                if qty > 0:
+                    # ตรวจสอบก่อนว่าสินค้าในสต็อกมีเพียงพอหรือไม่
+                    stock_item = backend.searchStock(id)
 
-            if stock_item and stock_item.QTY >= qty:
-                enqueue_ = backend.enqueue(table, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
-                if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
-                    flash(f"Successfully added {qty} of item ID: {id} to queue.", "success")
-                else:
-                    flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "danger")
-            else:
-                flash(f"Insufficient stock for item ID: {id}", "danger")
-    if source == '1':
-        return redirect(url_for('table1'))
-    elif source == '2':
-        return redirect(url_for('table2'))
-    elif source == '3':
-            return redirect(url_for('table3'))
-    elif source == '4':
-        return redirect(url_for('table4'))
-    elif source == '5':
-        return redirect(url_for('table5'))
-
+                    if stock_item and stock_item.QTY >= qty:
+                        enqueue_ = backend.enqueue(table, id, qty)  # สั่งซื้อสินค้าลงคิว (table id ถูกกำหนดเป็น 1 สำหรับการทดสอบ)
+                        if enqueue_ == "Enqueue Success!!":  # ถ้าสำเร็จ
+                            flash(f"Successfully added {qty} of item ID: {id} to queue.", "success")
+                        else:
+                            flash(f"Failed to enqueue item ID: {id}. Reason: {enqueue_}", "danger")
+                    else:
+                        flash(f"Insufficient stock for item ID: {id}", "danger")
+            if source == '1':
+                return redirect(url_for('table1'))
+            elif source == '2':
+                return redirect(url_for('table2'))
+            elif source == '3':
+                    return redirect(url_for('table3'))
+            elif source == '4':
+                return redirect(url_for('table4'))
+            elif source == '5':
+                return redirect(url_for('table5'))
+        except ValueError:
+            flash("Invalid input. Please enter valid numbers.", "danger")
+            return redirect(url_for('table1'))
 
 @app.route('/admin/queue/dequeue', methods=['POST'])
 def dequeue():
-    item = backend.dequeue() 
-   
-    if item == "Queue is empty.":
-        flash("Queue is empty, nothing to dequeue.", "danger")
-    else:
-        flash(f"Dequeued item from queue number: {item}", "success")
+    try:
+        item = backend.dequeue() 
+    
+        if item == "Queue is empty.":
+            flash("Queue is empty, nothing to dequeue.", "danger")
+        else:
+            flash(f"Dequeued item from queue number: {item}", "success")
 
-    return redirect(url_for('queue'))
+        return redirect(url_for('queue'))
+    except ValueError:
+        flash("Invalid input.", "danger")
+        return redirect(url_for('queue'))
 
 @app.route('/displayqueue')
 def displayQueue():

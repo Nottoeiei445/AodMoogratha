@@ -2,9 +2,12 @@
 
 {%block content%}
     <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; " class="mx-1">
+        <div style="display: flex; justify-content: space-between; align-items: center; " class="mx-4 my-3">
             <h1>Stock</h1>
             <div style="display: flex; align-items: center; gap: 25px; " class="mx-1">
+            <form action ="{{url_for('addStock')}}" method="GET" >
+                <button class="btn btn-success" type="submit">Add New Stock</button>
+            </form>
             <form action="{{url_for('updatestock')}}" method="GET">
                 <button class="btn btn-success" type="submit">Update Stock</button>
             </form>
@@ -54,11 +57,9 @@
             </div>
             {% endfor %}
             {% endif %}
+          
+            
         </div>
     </div>
-    <form action ="{{url_for('addStock')}}" method="GET" >
-    <div class="container-fluid" style="position: fixed; bottom: 0; left: 0; right: 0; padding-left: 15px; padding-right: 15px;">
-        <input type="submit" value="Add New Stock" class="btn btn-success btn-block my-2" style="width: 100%; font-size: 18px;">
-    </div>
-    </form>
+    
 {%endblock%}
