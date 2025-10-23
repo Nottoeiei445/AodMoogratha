@@ -1,5 +1,0 @@
-- แตกไฟล์ที่ D/Code 
-- เวลา import ให้ใช้ from Backend import Backend 
--วิธีเรียกฟังกชั่นเหมือนเดิมทุกประการ แตกต่างที่เรียกจาก class backend เลย ไม่ต้องเรียกจากไฟล์ booktable .. etc
-- ถ้าไม่มี Library ให้เข้า cmd แล้วพิมพ์
-" pip install ตามด้วยชื่อฟังก์ชั่นใหญ่ "
