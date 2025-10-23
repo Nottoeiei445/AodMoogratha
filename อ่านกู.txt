@@ -1,14 +1,5 @@
 - แตกไฟล์ที่ D/Code 
-- เวลา import ให้ใช้ from Backend import Backend ถ้าไม่ได้ ใช้ท่ายาก 
-import sys 
-import os
-(จริงๆคือก็อปimport ตรง testForBooktable ได้ ไอที่มันยาวๆอ่ะ)
-
+- เวลา import ให้ใช้ from Backend import Backend 
 -วิธีเรียกฟังกชั่นเหมือนเดิมทุกประการ แตกต่างที่เรียกจาก class backend เลย ไม่ต้องเรียกจากไฟล์ booktable .. etc
 - ถ้าไม่มี Library ให้เข้า cmd แล้วพิมพ์
 " pip install ตามด้วยชื่อฟังก์ชั่นใหญ่ "
-
-- มีปัญหา ทักหาไบรท์กับนีโม่ กูไม่อยู่ แต่ถ้าจำเป็นจริงๆเดะมาช่วย 
-- ขอให้สนุก : D
-
-ด้วยความรัก จาก ฝั่ง Backend
